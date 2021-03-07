@@ -1,5 +1,5 @@
 package ru.sbt.mipt.oop;
 
-public interface EventsProcessor {
+public interface SensorEventProcessor {
     void processEvent(SensorEvent event);
 }
