@@ -1,15 +1,15 @@
-package ru.sbt.mipt.oop;
+package ru.sbt.mipt.oop.sensor;
 
-public class SmartHomeManager {
+public class SensorEventLoop {
     private final SensorEventQueue eventQueue;
     private final SensorEventProcessor sensorEventProcessor;
 
-    public SmartHomeManager(SensorEventQueue eventQueue, SensorEventProcessor sensorEventProcessor) {
+    public SensorEventLoop(SensorEventQueue eventQueue, SensorEventProcessor sensorEventProcessor) {
         this.eventQueue = eventQueue;
         this.sensorEventProcessor = sensorEventProcessor;
     }
 
-    void processEvents() {
+    public void start() {
         SensorEvent event = eventQueue.getNextSensorEvent();
         while (event != null) {
             sensorEventProcessor.processEvent(event);

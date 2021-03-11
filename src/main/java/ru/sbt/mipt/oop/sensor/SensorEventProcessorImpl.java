@@ -1,10 +1,18 @@
-package ru.sbt.mipt.oop;
+package ru.sbt.mipt.oop.sensor;
 
-public class DummySensorEventProcessor implements SensorEventProcessor {
+import ru.sbt.mipt.oop.command.CommandSender;
+import ru.sbt.mipt.oop.command.CommandType;
+import ru.sbt.mipt.oop.command.SensorCommand;
+import ru.sbt.mipt.oop.home.Door;
+import ru.sbt.mipt.oop.home.Light;
+import ru.sbt.mipt.oop.home.Room;
+import ru.sbt.mipt.oop.home.SmartHome;
+
+public class SensorEventProcessorImpl implements SensorEventProcessor {
     private final SmartHome smartHome;
     private final CommandSender commandSender;
 
-    public DummySensorEventProcessor(SmartHome smartHome, CommandSender commandSender) {
+    public SensorEventProcessorImpl(SmartHome smartHome, CommandSender commandSender) {
         this.smartHome = smartHome;
         this.commandSender = commandSender;
     }

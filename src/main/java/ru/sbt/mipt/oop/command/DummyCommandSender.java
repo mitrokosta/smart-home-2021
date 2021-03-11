@@ -1,4 +1,7 @@
-package ru.sbt.mipt.oop;
+package ru.sbt.mipt.oop.command;
+
+import ru.sbt.mipt.oop.command.CommandSender;
+import ru.sbt.mipt.oop.command.SensorCommand;
 
 public class DummyCommandSender implements CommandSender {
     @Override

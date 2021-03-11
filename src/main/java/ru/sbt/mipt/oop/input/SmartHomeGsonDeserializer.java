@@ -1,7 +1,7 @@
 package ru.sbt.mipt.oop.input;
 
 import com.google.gson.Gson;
-import ru.sbt.mipt.oop.SmartHome;
+import ru.sbt.mipt.oop.home.SmartHome;
 
 public class SmartHomeGsonDeserializer implements SmartHomeDeserializer {
     @Override
