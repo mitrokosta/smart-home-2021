@@ -14,8 +14,8 @@ public class Application {
         SmartHomeReader reader = new SmartHomeFileReader("smart-home-1.js", new SmartHomeGsonDeserializer());
         SmartHome smartHome = reader.getSmartHome();
 
-        SensorEventLoop manager = new SensorEventLoop(new RandomSensorEventQueue(),
+        SensorEventLoop eventLoop = new SensorEventLoop(new RandomSensorEventQueue(),
                 new SensorEventProcessorImpl(smartHome, new DummyCommandSender()));
-        manager.start();
+        eventLoop.start();
     }
 }
