@@ -3,7 +3,6 @@ package ru.sbt.mipt.oop.sensor.handler;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.CommandType;
 import ru.sbt.mipt.oop.command.SensorCommand;
-import ru.sbt.mipt.oop.home.Door;
 import ru.sbt.mipt.oop.home.Light;
 import ru.sbt.mipt.oop.home.Room;
 import ru.sbt.mipt.oop.home.SmartHome;

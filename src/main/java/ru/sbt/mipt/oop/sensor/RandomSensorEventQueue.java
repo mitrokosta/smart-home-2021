@@ -1,9 +1,5 @@
 package ru.sbt.mipt.oop.sensor;
 
-import ru.sbt.mipt.oop.sensor.SensorEvent;
-import ru.sbt.mipt.oop.sensor.SensorEventQueue;
-import ru.sbt.mipt.oop.sensor.SensorEventType;
-
 public class RandomSensorEventQueue implements SensorEventQueue {
     @Override
     public SensorEvent getNextSensorEvent() {
