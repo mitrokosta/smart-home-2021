@@ -15,7 +15,7 @@ import java.util.List;
 public class Application {
     public static void main(String... args) {
         SmartHomeReader reader = new SmartHomeFileReader("smart-home-1.js", new SmartHomeGsonDeserializer());
-        SmartHome smartHome = reader.getSmartHome();
+        SmartHome smartHome = reader.readSmartHome();
 
         CommandSender commandSender = new DummyCommandSender();
         SensorEventQueue eventQueue = new RandomSensorEventQueue();

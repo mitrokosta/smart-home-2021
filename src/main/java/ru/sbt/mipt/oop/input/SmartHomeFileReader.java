@@ -17,7 +17,7 @@ public class SmartHomeFileReader implements SmartHomeReader {
     }
 
     @Override
-    public SmartHome getSmartHome() {
+    public SmartHome readSmartHome() {
         try {
             return deserializer.deserialize(Files.readAllBytes(filePath));
         } catch (IOException e) {
