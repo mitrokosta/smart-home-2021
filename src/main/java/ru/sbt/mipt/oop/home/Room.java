@@ -25,6 +25,16 @@ public class Room implements Actionable {
         return name;
     }
 
+    public boolean hasDoor(String doorId) {
+        for (Door door : doors) {
+            if (door.getId().equals(doorId)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     @Override
     public void execute(Action action) {
         for (Actionable component : lights) {
