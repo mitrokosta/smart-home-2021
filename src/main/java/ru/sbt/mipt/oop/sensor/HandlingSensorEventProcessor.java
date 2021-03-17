@@ -11,7 +11,6 @@ public class HandlingSensorEventProcessor implements SensorEventProcessor {
 
     @Override
     public void processEvent(SensorEvent event) {
-        System.out.println("Got event: " + event);
         for (SensorEventHandler eventHandler : eventHandlers) {
             eventHandler.handle(event);
         }
