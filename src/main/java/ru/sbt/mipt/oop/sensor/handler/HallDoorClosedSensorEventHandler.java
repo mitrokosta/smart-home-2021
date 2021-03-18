@@ -33,12 +33,19 @@ public class HallDoorClosedSensorEventHandler implements SensorEventHandler {
         };
 
         String targetId = event.getObjectId();
+
+        Action checkHallDoor = (Actionable doorObject) -> {
+            if (doorObject instanceof Door && ((Door) doorObject).getId().equals(targetId)) {
+                smartHome.execute(turnEveryLightOff);
+            }
+        };
+
         smartHome.execute((Actionable roomObject) -> {
             if (roomObject instanceof Room) {
                 Room room = (Room) roomObject;
                 // если мы холл и нашу дверь закрыли, то...
-                if ("hall".equals(room.getName()) && room.hasDoor(targetId)) {
-                    smartHome.execute(turnEveryLightOff);
+                if ("hall".equals(room.getName())) {
+                    room.execute(checkHallDoor);
                 }
             }
         });

@@ -13,26 +13,8 @@ public class Room implements Actionable {
         this.name = name;
     }
 
-    public Collection<Light> getLights() {
-        return lights;
-    }
-
-    public Collection<Door> getDoors() {
-        return doors;
-    }
-
     public String getName() {
         return name;
-    }
-
-    public boolean hasDoor(String doorId) {
-        for (Door door : doors) {
-            if (door.getId().equals(doorId)) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     @Override

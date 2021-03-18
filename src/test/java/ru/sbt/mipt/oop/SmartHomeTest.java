@@ -137,24 +137,36 @@ class SmartHomeTest {
     }
 
     Light getLightById(String id) {
-        for (Room room : testHome.getRooms()) {
-            for (Light light : room.getLights()) {
-                if (light.getId().equals(id)) {
-                    return light;
+        var ref = new Object() {
+            Light light = null;
+        };
+
+        testHome.execute((Actionable lightObject) -> {
+            if (lightObject instanceof Light) {
+                Light temp = (Light) lightObject;
+                if (temp.getId().equals(id)) {
+                    ref.light = temp;
                 }
             }
-        }
-        return null;
+        });
+
+        return ref.light;
     }
 
     Door getDoorById(String id) {
-        for (Room room : testHome.getRooms()) {
-            for (Door door : room.getDoors()) {
-                if (door.getId().equals(id)) {
-                    return door;
+        var ref = new Object() {
+            Door door = null;
+        };
+
+        testHome.execute((Actionable doorObject) -> {
+            if (doorObject instanceof Door) {
+                Door temp = (Door) doorObject;
+                if (temp.getId().equals(id)) {
+                    ref.door = temp;
                 }
             }
-        }
-        return null;
+        });
+
+        return ref.door;
     }
 }
