@@ -1,10 +1,6 @@
 package ru.sbt.mipt.oop.sensor.handler;
 
-import ru.sbt.mipt.oop.home.Light;
-import ru.sbt.mipt.oop.home.Room;
-import ru.sbt.mipt.oop.home.SmartHome;
-import ru.sbt.mipt.oop.home.util.LightSearchQuery;
-import ru.sbt.mipt.oop.home.util.SmartHomeUtils;
+import ru.sbt.mipt.oop.home.*;
 import ru.sbt.mipt.oop.sensor.SensorEvent;
 import ru.sbt.mipt.oop.sensor.SensorEventHandler;
 import ru.sbt.mipt.oop.sensor.SensorEventType;
@@ -22,13 +18,14 @@ public class LightOffSensorEventHandler implements SensorEventHandler {
             return;
         }
 
-        LightSearchQuery searchQuery = SmartHomeUtils.findLight(smartHome, event.getObjectId());
-        if (searchQuery != null) {
-            Light light = searchQuery.getLight();
-            Room room = searchQuery.getRoom();
-
-            light.setOn(false);
-            System.out.println("Light " + light.getId() + " in room " + room.getName() + " was turned off.");
-        }
+        String targetId = event.getObjectId();
+        smartHome.execute((Actionable lightObject) -> {
+            if (lightObject instanceof Light) {
+                Light light = (Light) lightObject;
+                if (light.getId().equals(targetId)) {
+                    light.setOn(false);
+                }
+            }
+        });
     }
 }
