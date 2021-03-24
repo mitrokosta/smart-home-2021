@@ -1,5 +1,7 @@
 package ru.sbt.mipt.oop.sensor.handler;
 
+import ru.sbt.mipt.oop.action.Action;
+import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.CommandType;
 import ru.sbt.mipt.oop.command.SensorCommand;
@@ -32,7 +34,7 @@ public class HallDoorClosedSensorEventHandler implements SensorEventHandler {
             }
         };
 
-        String targetId = event.getEventData();
+        String targetId = event.getObjectId();
 
         Action checkHallDoor = (Actionable doorObject) -> {
             if (doorObject instanceof Door && ((Door) doorObject).getId().equals(targetId)) {

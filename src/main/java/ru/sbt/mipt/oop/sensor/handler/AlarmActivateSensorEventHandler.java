@@ -13,6 +13,6 @@ public class AlarmActivateSensorEventHandler implements SensorEventHandler {
 
     @Override
     public void handle(SensorEvent event) {
-        alarm.activate(event.getEventData());
+        alarm.activate(event.getObjectId());
     }
 }

@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
+import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.*;
 import ru.sbt.mipt.oop.sensor.*;

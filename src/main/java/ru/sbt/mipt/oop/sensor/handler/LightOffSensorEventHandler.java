@@ -1,5 +1,6 @@
 package ru.sbt.mipt.oop.sensor.handler;
 
+import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.home.*;
 import ru.sbt.mipt.oop.sensor.SensorEvent;
 import ru.sbt.mipt.oop.sensor.SensorEventHandler;
@@ -18,7 +19,7 @@ public class LightOffSensorEventHandler implements SensorEventHandler {
             return;
         }
 
-        String targetId = event.getEventData();
+        String targetId = event.getObjectId();
         smartHome.execute((Actionable lightObject) -> {
             if (lightObject instanceof Light) {
                 Light light = (Light) lightObject;

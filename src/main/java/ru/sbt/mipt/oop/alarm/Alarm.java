@@ -13,6 +13,10 @@ public class Alarm {
         state = newState;
     }
 
+    public AlarmState getState() {
+        return state;
+    }
+
     public void activate(String accessCode) {
         if (accessCode.equals(this.accessCode)) {
             state.activate();
