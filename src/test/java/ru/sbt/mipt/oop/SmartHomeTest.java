@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.*;
-import ru.sbt.mipt.oop.sensor.*;
-import ru.sbt.mipt.oop.sensor.handler.*;
+import ru.sbt.mipt.oop.event.*;
+import ru.sbt.mipt.oop.event.handler.*;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -41,9 +41,9 @@ class SmartHomeTest {
         assertFalse(light.isOn());
 
         processEvents(List.of(
-                new SensorEvent(SensorEventType.LIGHT_ON, "1")
+                new SensorEvent(EventType.LIGHT_ON, "1")
         ), List.of(
-                new LightOnSensorEventHandler(testHome)
+                new LightOnEventHandler(testHome)
         ));
 
         assertTrue(light.isOn());
@@ -56,9 +56,9 @@ class SmartHomeTest {
         assertTrue(light.isOn());
 
         processEvents(List.of(
-                new SensorEvent(SensorEventType.LIGHT_OFF, "2")
+                new SensorEvent(EventType.LIGHT_OFF, "2")
         ), List.of(
-                new LightOffSensorEventHandler(testHome)
+                new LightOffEventHandler(testHome)
         ));
 
         assertFalse(light.isOn());
@@ -71,9 +71,9 @@ class SmartHomeTest {
         assertFalse(door.isOpen());
 
         processEvents(List.of(
-                new SensorEvent(SensorEventType.DOOR_OPEN, "1")
+                new SensorEvent(EventType.DOOR_OPEN, "1")
         ), List.of(
-                new DoorOpenedSensorEventHandler(testHome)
+                new DoorOpenedEventHandler(testHome)
         ));
 
         assertTrue(door.isOpen());
@@ -86,9 +86,9 @@ class SmartHomeTest {
         assertTrue(door.isOpen());
 
         processEvents(List.of(
-                new SensorEvent(SensorEventType.DOOR_CLOSED, "3")
+                new SensorEvent(EventType.DOOR_CLOSED, "3")
         ), List.of(
-                new DoorClosedSensorEventHandler(testHome)
+                new DoorClosedEventHandler(testHome)
         ));
 
         assertFalse(door.isOpen());
@@ -105,10 +105,10 @@ class SmartHomeTest {
         assertTrue(light.isOn());
 
         processEvents(List.of(
-                new SensorEvent(SensorEventType.DOOR_CLOSED, "4")
+                new SensorEvent(EventType.DOOR_CLOSED, "4")
         ), List.of(
-                new DoorClosedSensorEventHandler(testHome),
-                new HallDoorClosedSensorEventHandler(testHome, new DummyCommandSender())
+                new DoorClosedEventHandler(testHome),
+                new HallDoorClosedEventHandler(testHome, new DummyCommandSender())
         ));
 
         assertFalse(door.isOpen());
@@ -129,11 +129,11 @@ class SmartHomeTest {
         assertEquals(18, ref.objCount);
     }
 
-    void processEvents(List<SensorEvent> events, List<SensorEventHandler> handlers) {
-        SensorEventProcessor sensorEventProcessor = new HandlingSensorEventProcessor(handlers);
-        SensorEventQueue eventQueue = new PredefinedSensorEventQueue(new ArrayDeque<>(events));
+    void processEvents(List<SensorEvent> events, List<EventHandler> handlers) {
+        EventProcessor eventProcessor = new HandlingEventProcessor(handlers);
+        EventQueue eventQueue = new PredefinedEventQueue(new ArrayDeque<>(events));
 
-        SensorEventLoop eventLoop = new SensorEventLoop(eventQueue, sensorEventProcessor);
+        EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
     }
 

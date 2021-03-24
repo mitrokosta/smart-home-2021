@@ -7,8 +7,8 @@ import ru.sbt.mipt.oop.home.SmartHome;
 import ru.sbt.mipt.oop.input.SmartHomeFileReader;
 import ru.sbt.mipt.oop.input.SmartHomeGsonDeserializer;
 import ru.sbt.mipt.oop.input.SmartHomeReader;
-import ru.sbt.mipt.oop.sensor.*;
-import ru.sbt.mipt.oop.sensor.handler.*;
+import ru.sbt.mipt.oop.event.*;
+import ru.sbt.mipt.oop.event.handler.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,22 +19,22 @@ public class Application {
         SmartHome smartHome = reader.readSmartHome();
 
         CommandSender commandSender = new DummyCommandSender();
-        SensorEventQueue eventQueue = new RandomSensorEventQueue();
+        EventQueue eventQueue = new RandomEventQueue();
         Alarm alarm = new Alarm("123");
 
-        List<SensorEventHandler> handlers = Arrays.asList(
-                new LightOnSensorEventHandler(smartHome),
-                new LightOffSensorEventHandler(smartHome),
-                new DoorOpenedSensorEventHandler(smartHome),
-                new DoorClosedSensorEventHandler(smartHome),
-                new HallDoorClosedSensorEventHandler(smartHome, commandSender),
-                new AlarmActivateSensorEventHandler(alarm),
-                new AlarmDeactivateSensorEventHandler(alarm)
+        List<EventHandler> handlers = Arrays.asList(
+                new LightOnEventHandler(smartHome),
+                new LightOffEventHandler(smartHome),
+                new DoorOpenedEventHandler(smartHome),
+                new DoorClosedEventHandler(smartHome),
+                new HallDoorClosedEventHandler(smartHome, commandSender),
+                new AlarmActivateEventHandler(alarm),
+                new AlarmDeactivateEventHandler(alarm)
         );
 
-        SensorEventProcessor sensorEventProcessor = new HandlingSensorEventProcessor(handlers);
+        EventProcessor eventProcessor = new HandlingEventProcessor(handlers);
 
-        SensorEventLoop eventLoop = new SensorEventLoop(eventQueue, sensorEventProcessor);
+        EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
     }
 }

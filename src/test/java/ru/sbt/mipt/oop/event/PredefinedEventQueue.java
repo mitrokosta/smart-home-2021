@@ -1,16 +1,16 @@
-package ru.sbt.mipt.oop.sensor;
+package ru.sbt.mipt.oop.event;
 
 import java.util.Queue;
 
-public class PredefinedSensorEventQueue implements SensorEventQueue {
+public class PredefinedEventQueue implements EventQueue {
     private final Queue<SensorEvent> queue;
 
-    public PredefinedSensorEventQueue(Queue<SensorEvent> queue) {
+    public PredefinedEventQueue(Queue<SensorEvent> queue) {
         this.queue = queue;
     }
 
     @Override
-    public SensorEvent getNextSensorEvent() {
+    public Event getNextEvent() {
         if (queue.isEmpty()) {
             return null;
         }

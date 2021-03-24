@@ -1,26 +1,29 @@
-package ru.sbt.mipt.oop.sensor.handler;
+package ru.sbt.mipt.oop.event.handler;
 
 import ru.sbt.mipt.oop.action.Actionable;
+import ru.sbt.mipt.oop.event.Event;
+import ru.sbt.mipt.oop.event.SensorEvent;
 import ru.sbt.mipt.oop.home.Light;
 import ru.sbt.mipt.oop.home.SmartHome;
-import ru.sbt.mipt.oop.sensor.SensorEvent;
-import ru.sbt.mipt.oop.sensor.SensorEventHandler;
-import ru.sbt.mipt.oop.sensor.SensorEventType;
+import ru.sbt.mipt.oop.event.EventHandler;
+import ru.sbt.mipt.oop.event.EventType;
 
-public class LightOnSensorEventHandler implements SensorEventHandler {
+public class LightOnEventHandler implements EventHandler {
     private final SmartHome smartHome;
 
-    public LightOnSensorEventHandler(SmartHome smartHome) {
+    public LightOnEventHandler(SmartHome smartHome) {
         this.smartHome = smartHome;
     }
 
     @Override
-    public void handle(SensorEvent event) {
-        if (event.getType() != SensorEventType.LIGHT_ON) {
+    public void handle(Event event) {
+        if (event.getType() != EventType.LIGHT_ON || !(event instanceof SensorEvent)) {
             return;
         }
 
-        String targetId = event.getObjectId();
+        SensorEvent sensorEvent = (SensorEvent) event;
+
+        String targetId = sensorEvent.getObjectId();
         smartHome.execute((Actionable lightObject) -> {
             if (lightObject instanceof Light) {
                 Light light = (Light) lightObject;
