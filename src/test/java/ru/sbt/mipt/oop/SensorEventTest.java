@@ -14,7 +14,7 @@ import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.List;
 
-class SmartHomeTest {
+class SensorEventTest {
     SmartHome testHome;
 
     @BeforeEach
