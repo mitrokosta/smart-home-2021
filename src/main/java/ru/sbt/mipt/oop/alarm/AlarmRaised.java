@@ -12,7 +12,7 @@ public class AlarmRaised extends AlarmState {
 
     @Override
     public void deactivate() {
-        // не позволяем себя выключить, если поднята тревога
+        alarm.setState(new AlarmDeactivated(alarm));
     }
 
     @Override

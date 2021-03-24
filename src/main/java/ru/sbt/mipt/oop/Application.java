@@ -1,6 +1,8 @@
 package ru.sbt.mipt.oop;
 
 import ru.sbt.mipt.oop.alarm.Alarm;
+import ru.sbt.mipt.oop.alarm.AlarmIgnoringProtector;
+import ru.sbt.mipt.oop.alarm.AlarmIntrusionDetector;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.SmartHome;
@@ -8,7 +10,7 @@ import ru.sbt.mipt.oop.input.SmartHomeFileReader;
 import ru.sbt.mipt.oop.input.SmartHomeGsonDeserializer;
 import ru.sbt.mipt.oop.input.SmartHomeReader;
 import ru.sbt.mipt.oop.event.*;
-import ru.sbt.mipt.oop.event.handler.*;
+import ru.sbt.mipt.oop.handler.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -33,6 +35,8 @@ public class Application {
         );
 
         EventProcessor eventProcessor = new HandlingEventProcessor(handlers);
+        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm);
+        eventProcessor = new AlarmIntrusionDetector(eventProcessor, alarm);
 
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();

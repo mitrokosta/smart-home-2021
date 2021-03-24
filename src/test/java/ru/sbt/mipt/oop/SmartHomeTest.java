@@ -8,7 +8,7 @@ import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.*;
 import ru.sbt.mipt.oop.event.*;
-import ru.sbt.mipt.oop.event.handler.*;
+import ru.sbt.mipt.oop.handler.*;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;

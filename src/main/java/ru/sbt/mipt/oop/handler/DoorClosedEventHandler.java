@@ -1,4 +1,4 @@
-package ru.sbt.mipt.oop.event.handler;
+package ru.sbt.mipt.oop.handler;
 
 import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.event.Event;
@@ -8,16 +8,16 @@ import ru.sbt.mipt.oop.home.SmartHome;
 import ru.sbt.mipt.oop.event.EventHandler;
 import ru.sbt.mipt.oop.event.EventType;
 
-public class DoorOpenedEventHandler implements EventHandler {
+public class DoorClosedEventHandler implements EventHandler {
     private final SmartHome smartHome;
 
-    public DoorOpenedEventHandler(SmartHome smartHome) {
+    public DoorClosedEventHandler(SmartHome smartHome) {
         this.smartHome = smartHome;
     }
 
     @Override
     public void handle(Event event) {
-        if (event.getType() != EventType.DOOR_OPEN || !(event instanceof SensorEvent)) {
+        if (event.getType() != EventType.DOOR_CLOSED || !(event instanceof SensorEvent)) {
             return;
         }
 
@@ -28,7 +28,7 @@ public class DoorOpenedEventHandler implements EventHandler {
             if (doorObject instanceof Door) {
                 Door door = (Door) doorObject;
                 if (door.getId().equals(targetId)) {
-                    door.setOpen(true);
+                    door.setOpen(false);
                 }
             }
         });
