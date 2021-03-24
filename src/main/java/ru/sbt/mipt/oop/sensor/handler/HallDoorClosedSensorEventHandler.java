@@ -32,7 +32,7 @@ public class HallDoorClosedSensorEventHandler implements SensorEventHandler {
             }
         };
 
-        String targetId = event.getObjectId();
+        String targetId = event.getEventData();
 
         Action checkHallDoor = (Actionable doorObject) -> {
             if (doorObject instanceof Door && ((Door) doorObject).getId().equals(targetId)) {

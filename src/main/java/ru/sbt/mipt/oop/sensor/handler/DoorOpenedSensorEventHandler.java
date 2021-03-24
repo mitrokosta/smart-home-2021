@@ -20,7 +20,7 @@ public class DoorOpenedSensorEventHandler implements SensorEventHandler {
             return;
         }
 
-        String targetId = event.getObjectId();
+        String targetId = event.getEventData();
         smartHome.execute((Actionable doorObject) -> {
             if (doorObject instanceof Door) {
                 Door door = (Door) doorObject;

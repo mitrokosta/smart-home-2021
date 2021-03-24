@@ -2,26 +2,26 @@ package ru.sbt.mipt.oop.sensor;
 
 public class SensorEvent {
     private final SensorEventType type;
-    private final String objectId;
+    private final String eventData;
 
-    public SensorEvent(SensorEventType type, String objectId) {
+    public SensorEvent(SensorEventType type, String eventData) {
         this.type = type;
-        this.objectId = objectId;
+        this.eventData = eventData;
     }
 
     public SensorEventType getType() {
         return type;
     }
 
-    public String getObjectId() {
-        return objectId;
+    public String getEventData() {
+        return eventData;
     }
 
     @Override
     public String toString() {
         return "SensorEvent{" +
                 "type=" + type +
-                ", objectId='" + objectId + '\'' +
+                ", eventData='" + eventData + '\'' +
                 '}';
     }
 }

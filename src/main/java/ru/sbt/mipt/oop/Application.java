@@ -1,5 +1,6 @@
 package ru.sbt.mipt.oop;
 
+import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.SmartHome;
@@ -19,13 +20,16 @@ public class Application {
 
         CommandSender commandSender = new DummyCommandSender();
         SensorEventQueue eventQueue = new RandomSensorEventQueue();
+        Alarm alarm = new Alarm("123");
 
         List<SensorEventHandler> handlers = Arrays.asList(
                 new LightOnSensorEventHandler(smartHome),
                 new LightOffSensorEventHandler(smartHome),
                 new DoorOpenedSensorEventHandler(smartHome),
                 new DoorClosedSensorEventHandler(smartHome),
-                new HallDoorClosedSensorEventHandler(smartHome, commandSender)
+                new HallDoorClosedSensorEventHandler(smartHome, commandSender),
+                new AlarmActivateSensorEventHandler(alarm),
+                new AlarmDeactivateSensorEventHandler(alarm)
         );
 
         SensorEventProcessor sensorEventProcessor = new HandlingSensorEventProcessor(handlers);

@@ -9,7 +9,7 @@ public class Alarm {
         this.accessCode = accessCode;
     }
 
-    public void setState(AlarmState newState) {
+    void setState(AlarmState newState) {
         state = newState;
     }
 

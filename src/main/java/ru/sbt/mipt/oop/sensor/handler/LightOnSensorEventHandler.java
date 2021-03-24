@@ -20,7 +20,7 @@ public class LightOnSensorEventHandler implements SensorEventHandler {
             return;
         }
 
-        String targetId = event.getObjectId();
+        String targetId = event.getEventData();
         smartHome.execute((Actionable lightObject) -> {
             if (lightObject instanceof Light) {
                 Light light = (Light) lightObject;
