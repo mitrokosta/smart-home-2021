@@ -6,12 +6,13 @@ public class AlarmDeactivated extends AlarmState {
     }
 
     @Override
-    public void activate() {
+    public void activate(String accessCode) {
+        alarm.setAccessCode(accessCode);
         alarm.setState(new AlarmActivated(alarm));
     }
 
     @Override
-    public void deactivate() {
+    public void deactivate(String accessCode) {
 
     }
 

@@ -7,7 +7,7 @@ public abstract class AlarmState {
         this.alarm = alarm;
     }
 
-    public abstract void activate();
-    public abstract void deactivate();
+    public abstract void activate(String accessCode);
+    public abstract void deactivate(String accessCode);
     public abstract void raise();
 }

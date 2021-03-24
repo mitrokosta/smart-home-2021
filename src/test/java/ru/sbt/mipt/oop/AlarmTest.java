@@ -42,9 +42,8 @@ public class AlarmTest {
 
     @Test
     void testChangeAlarmState() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
-        alarm.deactivate("123");
         assertTrue(alarm.getState() instanceof AlarmDeactivated);
 
         alarm.activate("123");
@@ -56,7 +55,7 @@ public class AlarmTest {
 
     @Test
     void testWrongCodeForActivatedAlarmExpectRaisedAlarm() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         alarm.activate("123");
         assertTrue(alarm.getState() instanceof AlarmActivated);
@@ -67,7 +66,7 @@ public class AlarmTest {
 
     @Test
     void testRaiseDeactivatedAlarmExpectDeactivatedAlarm() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         alarm.deactivate("123");
         assertTrue(alarm.getState() instanceof AlarmDeactivated);
@@ -78,7 +77,7 @@ public class AlarmTest {
 
     @Test
     void testRaisedAlarmProtectionExpectIgnoredHandlers() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         alarm.activate("123");
         alarm.raise();
@@ -103,7 +102,7 @@ public class AlarmTest {
 
     @Test
     void testActivatedAlarmIntrusionExpectRaisedAlarm() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         alarm.activate("123");
         assertTrue(alarm.getState() instanceof AlarmActivated);
@@ -124,9 +123,8 @@ public class AlarmTest {
 
     @Test
     void testAlarmActivateHandlerExpectActivatedAlarm() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
-        alarm.deactivate("123");
         assertTrue(alarm.getState() instanceof AlarmDeactivated);
 
         EventProcessor eventProcessor = new HandlingEventProcessor(List.of(new AlarmActivateEventHandler(alarm)));
@@ -143,7 +141,7 @@ public class AlarmTest {
 
     @Test
     void testAlarmDeactivateHandlerExpectDeactivatedAlarm() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         alarm.activate("123");
         assertTrue(alarm.getState() instanceof AlarmActivated);
@@ -162,7 +160,7 @@ public class AlarmTest {
 
     @Test
     void testAlarmDeactivateHandlerWithWrongCodeExpectRaisedAlarm() {
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         alarm.activate("123");
         assertTrue(alarm.getState() instanceof AlarmActivated);

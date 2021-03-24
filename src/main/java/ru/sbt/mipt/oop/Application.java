@@ -22,7 +22,7 @@ public class Application {
 
         CommandSender commandSender = new DummyCommandSender();
         EventQueue eventQueue = new RandomEventQueue();
-        Alarm alarm = new Alarm("123");
+        Alarm alarm = new Alarm();
 
         List<EventHandler> handlers = Arrays.asList(
                 new LightOnEventHandler(smartHome),

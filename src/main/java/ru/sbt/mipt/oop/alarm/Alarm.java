@@ -1,13 +1,8 @@
 package ru.sbt.mipt.oop.alarm;
 
 public class Alarm {
-    private AlarmState state;
-    private final String accessCode;
-
-    public Alarm(String accessCode) {
-        this.state = new AlarmDeactivated(this);
-        this.accessCode = accessCode;
-    }
+    private AlarmState state = new AlarmDeactivated(this);
+    private String accessCode;
 
     void setState(AlarmState newState) {
         state = newState;
@@ -17,20 +12,20 @@ public class Alarm {
         return state;
     }
 
+    void setAccessCode(String accessCode) {
+        this.accessCode = accessCode;
+    }
+
+    String getAccessCode() {
+        return accessCode;
+    }
+
     public void activate(String accessCode) {
-        if (accessCode.equals(this.accessCode)) {
-            state.activate();
-        } else {
-            state.raise();
-        }
+        state.activate(accessCode);
     }
 
     public void deactivate(String accessCode) {
-        if (accessCode.equals(this.accessCode)) {
-            state.deactivate();
-        } else {
-            state.raise();
-        }
+        state.deactivate(accessCode);
     }
 
     public void raise() {
