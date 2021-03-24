@@ -129,7 +129,7 @@ class SmartHomeTest {
         assertEquals(18, ref.objCount);
     }
 
-    void processEvents(List<SensorEvent> events, List<EventHandler> handlers) {
+    void processEvents(List<Event> events, List<EventHandler> handlers) {
         EventProcessor eventProcessor = new HandlingEventProcessor(handlers);
         EventQueue eventQueue = new PredefinedEventQueue(new ArrayDeque<>(events));
 

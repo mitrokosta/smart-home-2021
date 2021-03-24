@@ -3,9 +3,9 @@ package ru.sbt.mipt.oop.event;
 import java.util.Queue;
 
 public class PredefinedEventQueue implements EventQueue {
-    private final Queue<SensorEvent> queue;
+    private final Queue<Event> queue;
 
-    public PredefinedEventQueue(Queue<SensorEvent> queue) {
+    public PredefinedEventQueue(Queue<Event> queue) {
         this.queue = queue;
     }
 
