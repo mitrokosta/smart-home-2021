@@ -44,13 +44,13 @@ public class AlarmTest {
     void testChangeAlarmState() {
         Alarm alarm = new Alarm();
 
-        assertTrue(alarm.getState() instanceof AlarmDeactivated);
+        assertTrue(alarm.isDeactivated());
 
         alarm.activate("123");
-        assertTrue(alarm.getState() instanceof AlarmActivated);
+        assertTrue(alarm.isActivated());
 
         alarm.raise();
-        assertTrue(alarm.getState() instanceof AlarmRaised);
+        assertTrue(alarm.isRaised());
     }
 
     @Test
@@ -58,21 +58,10 @@ public class AlarmTest {
         Alarm alarm = new Alarm();
 
         alarm.activate("123");
-        assertTrue(alarm.getState() instanceof AlarmActivated);
+        assertTrue(alarm.isActivated());
 
         alarm.deactivate("456");
-        assertTrue(alarm.getState() instanceof AlarmRaised);
-    }
-
-    @Test
-    void testRaiseDeactivatedAlarmExpectDeactivatedAlarm() {
-        Alarm alarm = new Alarm();
-
-        alarm.deactivate("123");
-        assertTrue(alarm.getState() instanceof AlarmDeactivated);
-
-        alarm.raise();
-        assertTrue(alarm.getState() instanceof AlarmDeactivated);
+        assertTrue(alarm.isRaised());
     }
 
     @Test
@@ -81,7 +70,7 @@ public class AlarmTest {
 
         alarm.activate("123");
         alarm.raise();
-        assertTrue(alarm.getState() instanceof AlarmRaised);
+        assertTrue(alarm.isRaised());
 
         Counter counter = new Counter();
         EventProcessor eventProcessor = new HandlingEventProcessor(List.of(new CountingEventHandler(counter)));
@@ -92,7 +81,7 @@ public class AlarmTest {
                 new AlarmEvent(EventType.ALARM_DEACTIVATE, "123")
         )));
 
-        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm); // apply protection
+        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm, new SmsIntrusionNotifier()); // apply protection
 
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
@@ -105,7 +94,7 @@ public class AlarmTest {
         Alarm alarm = new Alarm();
 
         alarm.activate("123");
-        assertTrue(alarm.getState() instanceof AlarmActivated);
+        assertTrue(alarm.isActivated());
 
         EventProcessor eventProcessor = new HandlingEventProcessor(new ArrayList<>());
 
@@ -118,14 +107,14 @@ public class AlarmTest {
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
 
-        assertTrue(alarm.getState() instanceof AlarmRaised);
+        assertTrue(alarm.isRaised());
     }
 
     @Test
     void testAlarmActivateHandlerExpectActivatedAlarm() {
         Alarm alarm = new Alarm();
 
-        assertTrue(alarm.getState() instanceof AlarmDeactivated);
+        assertTrue(alarm.isDeactivated());
 
         EventProcessor eventProcessor = new HandlingEventProcessor(List.of(new AlarmActivateEventHandler(alarm)));
 
@@ -136,7 +125,7 @@ public class AlarmTest {
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
 
-        assertTrue(alarm.getState() instanceof AlarmActivated);
+        assertTrue(alarm.isActivated());
     }
 
     @Test
@@ -144,7 +133,7 @@ public class AlarmTest {
         Alarm alarm = new Alarm();
 
         alarm.activate("123");
-        assertTrue(alarm.getState() instanceof AlarmActivated);
+        assertTrue(alarm.isActivated());
 
         EventProcessor eventProcessor = new HandlingEventProcessor(List.of(new AlarmDeactivateEventHandler(alarm)));
 
@@ -155,7 +144,7 @@ public class AlarmTest {
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
 
-        assertTrue(alarm.getState() instanceof AlarmDeactivated);
+        assertTrue(alarm.isDeactivated());
     }
 
     @Test
@@ -163,7 +152,7 @@ public class AlarmTest {
         Alarm alarm = new Alarm();
 
         alarm.activate("123");
-        assertTrue(alarm.getState() instanceof AlarmActivated);
+        assertTrue(alarm.isActivated());
 
         EventProcessor eventProcessor = new HandlingEventProcessor(List.of(new AlarmDeactivateEventHandler(alarm)));
 
@@ -174,6 +163,6 @@ public class AlarmTest {
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
 
-        assertTrue(alarm.getState() instanceof AlarmRaised);
+        assertTrue(alarm.isRaised());
     }
 }

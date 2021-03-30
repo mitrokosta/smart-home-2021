@@ -18,6 +18,6 @@ public class AlarmDeactivated extends AlarmState {
 
     @Override
     public void raise() {
-
+        alarm.setState(new AlarmRaised(alarm));
     }
 }

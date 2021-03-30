@@ -3,6 +3,7 @@ package ru.sbt.mipt.oop;
 import ru.sbt.mipt.oop.alarm.Alarm;
 import ru.sbt.mipt.oop.alarm.AlarmIgnoringProtector;
 import ru.sbt.mipt.oop.alarm.AlarmIntrusionDetector;
+import ru.sbt.mipt.oop.alarm.SmsIntrusionNotifier;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.SmartHome;
@@ -35,7 +36,7 @@ public class Application {
         );
 
         EventProcessor eventProcessor = new HandlingEventProcessor(handlers);
-        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm);
+        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm, new SmsIntrusionNotifier());
         eventProcessor = new AlarmIntrusionDetector(eventProcessor, alarm);
 
         EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);

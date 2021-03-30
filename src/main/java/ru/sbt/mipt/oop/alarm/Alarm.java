@@ -8,8 +8,16 @@ public class Alarm {
         state = newState;
     }
 
-    public AlarmState getState() {
-        return state;
+    public boolean isActivated() {
+        return state instanceof AlarmActivated;
+    }
+
+    public boolean isDeactivated() {
+        return state instanceof AlarmDeactivated;
+    }
+
+    public boolean isRaised() {
+        return state instanceof AlarmRaised;
     }
 
     void setAccessCode(String accessCode) {

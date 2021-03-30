@@ -16,7 +16,7 @@ public class AlarmIntrusionDetector implements EventProcessor {
 
     @Override
     public void processEvent(Event event) {
-        if (alarm.getState() instanceof AlarmActivated && event instanceof SensorEvent) {
+        if (alarm.isActivated() && event instanceof SensorEvent) {
             alarm.raise();
         }
 
