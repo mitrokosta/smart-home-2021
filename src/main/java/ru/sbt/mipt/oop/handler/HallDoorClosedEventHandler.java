@@ -1,27 +1,32 @@
-package ru.sbt.mipt.oop.sensor.handler;
+package ru.sbt.mipt.oop.handler;
 
+import ru.sbt.mipt.oop.action.Action;
+import ru.sbt.mipt.oop.action.Actionable;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.CommandType;
 import ru.sbt.mipt.oop.command.SensorCommand;
+import ru.sbt.mipt.oop.event.Event;
+import ru.sbt.mipt.oop.event.SensorEvent;
 import ru.sbt.mipt.oop.home.*;
-import ru.sbt.mipt.oop.sensor.SensorEvent;
-import ru.sbt.mipt.oop.sensor.SensorEventHandler;
-import ru.sbt.mipt.oop.sensor.SensorEventType;
+import ru.sbt.mipt.oop.event.EventHandler;
+import ru.sbt.mipt.oop.event.EventType;
 
-public class HallDoorClosedSensorEventHandler implements SensorEventHandler {
+public class HallDoorClosedEventHandler implements EventHandler {
     private final SmartHome smartHome;
     private final CommandSender commandSender;
 
-    public HallDoorClosedSensorEventHandler(SmartHome smartHome, CommandSender commandSender) {
+    public HallDoorClosedEventHandler(SmartHome smartHome, CommandSender commandSender) {
         this.smartHome = smartHome;
         this.commandSender = commandSender;
     }
 
     @Override
-    public void handle(SensorEvent event) {
-        if (event.getType() != SensorEventType.DOOR_CLOSED) {
+    public void handle(Event event) {
+        if (event.getType() != EventType.DOOR_CLOSED || !(event instanceof SensorEvent)) {
             return;
         }
+
+        SensorEvent sensorEvent = (SensorEvent) event;
 
         Action turnEveryLightOff = (Actionable lightObject) -> {
             if (lightObject instanceof Light) {
@@ -32,7 +37,7 @@ public class HallDoorClosedSensorEventHandler implements SensorEventHandler {
             }
         };
 
-        String targetId = event.getObjectId();
+        String targetId = sensorEvent.getObjectId();
 
         Action checkHallDoor = (Actionable doorObject) -> {
             if (doorObject instanceof Door && ((Door) doorObject).getId().equals(targetId)) {

@@ -1,13 +1,17 @@
 package ru.sbt.mipt.oop;
 
+import ru.sbt.mipt.oop.alarm.Alarm;
+import ru.sbt.mipt.oop.alarm.AlarmIgnoringProtector;
+import ru.sbt.mipt.oop.alarm.AlarmIntrusionDetector;
+import ru.sbt.mipt.oop.alarm.SmsIntrusionNotifier;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
 import ru.sbt.mipt.oop.home.SmartHome;
 import ru.sbt.mipt.oop.input.SmartHomeFileReader;
 import ru.sbt.mipt.oop.input.SmartHomeGsonDeserializer;
 import ru.sbt.mipt.oop.input.SmartHomeReader;
-import ru.sbt.mipt.oop.sensor.*;
-import ru.sbt.mipt.oop.sensor.handler.*;
+import ru.sbt.mipt.oop.event.*;
+import ru.sbt.mipt.oop.handler.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,19 +22,24 @@ public class Application {
         SmartHome smartHome = reader.readSmartHome();
 
         CommandSender commandSender = new DummyCommandSender();
-        SensorEventQueue eventQueue = new RandomSensorEventQueue();
+        EventQueue eventQueue = new RandomEventQueue();
+        Alarm alarm = new Alarm();
 
-        List<SensorEventHandler> handlers = Arrays.asList(
-                new LightOnSensorEventHandler(smartHome),
-                new LightOffSensorEventHandler(smartHome),
-                new DoorOpenedSensorEventHandler(smartHome),
-                new DoorClosedSensorEventHandler(smartHome),
-                new HallDoorClosedSensorEventHandler(smartHome, commandSender)
+        List<EventHandler> handlers = Arrays.asList(
+                new LightOnEventHandler(smartHome),
+                new LightOffEventHandler(smartHome),
+                new DoorOpenedEventHandler(smartHome),
+                new DoorClosedEventHandler(smartHome),
+                new HallDoorClosedEventHandler(smartHome, commandSender),
+                new AlarmActivateEventHandler(alarm),
+                new AlarmDeactivateEventHandler(alarm)
         );
 
-        SensorEventProcessor sensorEventProcessor = new HandlingSensorEventProcessor(handlers);
+        EventProcessor eventProcessor = new HandlingEventProcessor(handlers);
+        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm, new SmsIntrusionNotifier());
+        eventProcessor = new AlarmIntrusionDetector(eventProcessor, alarm);
 
-        SensorEventLoop eventLoop = new SensorEventLoop(eventQueue, sensorEventProcessor);
+        EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
         eventLoop.start();
     }
 }
