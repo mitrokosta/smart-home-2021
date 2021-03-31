@@ -1,15 +1,10 @@
 package ru.sbt.mipt.oop;
 
-import ru.sbt.mipt.oop.alarm.Alarm;
-import ru.sbt.mipt.oop.alarm.AlarmIgnoringProtector;
-import ru.sbt.mipt.oop.alarm.AlarmIntrusionDetector;
-import ru.sbt.mipt.oop.alarm.SmsIntrusionNotifier;
-import ru.sbt.mipt.oop.command.CommandSender;
-import ru.sbt.mipt.oop.command.DummyCommandSender;
+import com.coolcompany.smarthome.events.SensorEventsManager;
+import ru.sbt.mipt.oop.alarm.*;
+import ru.sbt.mipt.oop.command.*;
 import ru.sbt.mipt.oop.home.SmartHome;
-import ru.sbt.mipt.oop.input.SmartHomeFileReader;
-import ru.sbt.mipt.oop.input.SmartHomeGsonDeserializer;
-import ru.sbt.mipt.oop.input.SmartHomeReader;
+import ru.sbt.mipt.oop.input.*;
 import ru.sbt.mipt.oop.event.*;
 import ru.sbt.mipt.oop.handler.*;
 
@@ -22,8 +17,8 @@ public class Application {
         SmartHome smartHome = reader.readSmartHome();
 
         CommandSender commandSender = new DummyCommandSender();
-        EventQueue eventQueue = new RandomEventQueue();
         Alarm alarm = new Alarm();
+        alarm.activate("123"); // демонстрация защиты
 
         List<EventHandler> handlers = Arrays.asList(
                 new LightOnEventHandler(smartHome),
@@ -39,7 +34,8 @@ public class Application {
         eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm, new SmsIntrusionNotifier());
         eventProcessor = new AlarmIntrusionDetector(eventProcessor, alarm);
 
-        EventLoop eventLoop = new EventLoop(eventQueue, eventProcessor);
-        eventLoop.start();
+        SensorEventsManager manager = new SensorEventsManager();
+        manager.registerEventHandler(new EventHandlerAdapter(eventProcessor));
+        manager.start();
     }
 }
