@@ -2,11 +2,15 @@ package ru.sbt.mipt.oop.event;
 
 import com.coolcompany.smarthome.events.CCSensorEvent;
 
+import java.util.Map;
+
 public class EventHandlerAdapter implements com.coolcompany.smarthome.events.EventHandler {
     private final EventProcessor processor;
+    private final Map<String, EventType> eventTranslator;
 
-    public EventHandlerAdapter(EventProcessor processor) {
+    public EventHandlerAdapter(EventProcessor processor, Map<String, EventType> translator) {
         this.processor = processor;
+        this.eventTranslator = translator;
     }
 
     @Override
@@ -18,27 +22,10 @@ public class EventHandlerAdapter implements com.coolcompany.smarthome.events.Eve
     }
 
     private Event translate(CCSensorEvent event) {
-        EventType type;
+        EventType type = eventTranslator.get(event.getEventType());
 
-        switch (event.getEventType()) {
-            case "LightIsOn":
-                type = EventType.LIGHT_ON;
-                break;
-
-            case "LightIsOff":
-                type = EventType.LIGHT_OFF;
-                break;
-
-            case "DoorIsOpen":
-                type = EventType.DOOR_OPEN;
-                break;
-
-            case "DoorIsClosed":
-                type = EventType.DOOR_CLOSED;
-                break;
-
-            default:
-                return null;
+        if (type == null) {
+            return null;
         }
 
         return new SensorEvent(type, event.getObjectId());

@@ -6,10 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import ru.sbt.mipt.oop.alarm.*;
 import ru.sbt.mipt.oop.command.CommandSender;
 import ru.sbt.mipt.oop.command.DummyCommandSender;
-import ru.sbt.mipt.oop.event.EventHandler;
-import ru.sbt.mipt.oop.event.EventHandlerAdapter;
-import ru.sbt.mipt.oop.event.EventProcessor;
-import ru.sbt.mipt.oop.event.HandlingEventProcessor;
+import ru.sbt.mipt.oop.event.*;
 import ru.sbt.mipt.oop.handler.*;
 import ru.sbt.mipt.oop.home.SmartHome;
 import ru.sbt.mipt.oop.input.SmartHomeDeserializer;
@@ -19,6 +16,8 @@ import ru.sbt.mipt.oop.input.SmartHomeReader;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import static java.util.Map.entry;
+import java.util.Map;
 
 @Configuration
 public class ProtectedSmartHomeConfiguration {
@@ -112,8 +111,18 @@ public class ProtectedSmartHomeConfiguration {
     }
 
     @Bean
-    com.coolcompany.smarthome.events.EventHandler adaptedSensorEventHandler(EventProcessor protectedEventProcessor) {
-        return new EventHandlerAdapter(protectedEventProcessor);
+    Map<String, EventType> eventTranslator() {
+        return Map.ofEntries(
+                entry("LightIsOn", EventType.LIGHT_ON),
+                entry("LightIsOff", EventType.LIGHT_OFF),
+                entry("DoorIsOpen", EventType.DOOR_OPEN),
+                entry("DoorIsClosed", EventType.DOOR_CLOSED)
+        );
+    }
+
+    @Bean
+    com.coolcompany.smarthome.events.EventHandler adaptedSensorEventHandler(EventProcessor protectedEventProcessor, Map<String, EventType> eventTranslator) {
+        return new EventHandlerAdapter(protectedEventProcessor, eventTranslator);
     }
 
     @Bean
