@@ -12,93 +12,114 @@ import ru.sbt.mipt.oop.event.EventProcessor;
 import ru.sbt.mipt.oop.event.HandlingEventProcessor;
 import ru.sbt.mipt.oop.handler.*;
 import ru.sbt.mipt.oop.home.SmartHome;
-import ru.sbt.mipt.oop.input.*;
+import ru.sbt.mipt.oop.input.SmartHomeDeserializer;
+import ru.sbt.mipt.oop.input.SmartHomeFileReader;
+import ru.sbt.mipt.oop.input.SmartHomeGsonDeserializer;
+import ru.sbt.mipt.oop.input.SmartHomeReader;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Configuration
 public class ProtectedSmartHomeConfiguration {
     @Bean
-    SmartHomeReader getSmartHomeReader() {
-        return new SmartHomeFileReader(getSmartHomeFileName(), getSmartHomeDeserializer());
+    SmartHomeReader smartHomeReader(String smartHomeFileName, SmartHomeDeserializer smartHomeDeserializer) {
+        return new SmartHomeFileReader(smartHomeFileName, smartHomeDeserializer);
     }
 
     @Bean
-    SmartHomeDeserializer getSmartHomeDeserializer() {
+    SmartHomeDeserializer smartHomeDeserializer() {
         return new SmartHomeGsonDeserializer();
     }
 
     @Bean
-    String getSmartHomeFileName() {
+    String smartHomeFileName() {
         return "smart-home-1.js";
     }
 
     @Bean
-    SmartHome getSmartHome() {
-        return getSmartHomeReader().readSmartHome();
+    SmartHome smartHome(SmartHomeReader smartHomeReader) {
+        return smartHomeReader.readSmartHome();
     }
 
     @Bean
-    Alarm getActivatedAlarm() {
+    Alarm activatedAlarm(String alarmAccessCode) {
         Alarm alarm = new Alarm();
-        alarm.activate(getAlarmAccessCode());
+        alarm.activate(alarmAccessCode);
         return alarm;
     }
 
     @Bean
-    String getAlarmAccessCode() {
+    String alarmAccessCode() {
         return "123";
     }
 
     @Bean
-    List<EventHandler> getEventHandlers() {
-        SmartHome smartHome = getSmartHome();
-        Alarm alarm = getActivatedAlarm();
-        CommandSender commandSender = getCommandSender();
-
-        return Arrays.asList(
-                new LightOnEventHandler(smartHome),
-                new LightOffEventHandler(smartHome),
-                new DoorOpenedEventHandler(smartHome),
-                new DoorClosedEventHandler(smartHome),
-                new HallDoorClosedEventHandler(smartHome, commandSender),
-                new AlarmActivateEventHandler(alarm),
-                new AlarmDeactivateEventHandler(alarm)
-        );
+    EventHandler lightOnEventHandler(SmartHome smartHome) {
+        return new LightOnEventHandler(smartHome);
     }
 
     @Bean
-    CommandSender getCommandSender() {
+    EventHandler lightOffEventHandler(SmartHome smartHome) {
+        return new LightOffEventHandler(smartHome);
+    }
+
+    @Bean
+    EventHandler doorOpenedEventHandler(SmartHome smartHome) {
+        return new DoorOpenedEventHandler(smartHome);
+    }
+
+    @Bean
+    EventHandler doorClosedEventHandler(SmartHome smartHome) {
+        return new DoorClosedEventHandler(smartHome);
+    }
+
+    @Bean
+    EventHandler hallDoorClosedEventHandler(SmartHome smartHome, CommandSender commandSender) {
+        return new HallDoorClosedEventHandler(smartHome, commandSender);
+    }
+
+    @Bean
+    EventHandler alarmActivateEventHandler(Alarm activatedAlarm) {
+        return new AlarmActivateEventHandler(activatedAlarm);
+    }
+
+    @Bean
+    EventHandler alarmDeactivateEventHandler(Alarm activatedAlarm) {
+        return new AlarmDeactivateEventHandler(activatedAlarm);
+    }
+
+    @Bean
+    CommandSender commandSender() {
         return new DummyCommandSender();
     }
 
     @Bean
-    IntrusionNotifier getIntrusionNotifier() {
+    IntrusionNotifier intrusionNotifier() {
         return new SmsIntrusionNotifier();
     }
 
     @Bean
-    EventProcessor getProtectedEventProcessor() {
-        Alarm alarm = getActivatedAlarm();
-        IntrusionNotifier intrusionNotifier = getIntrusionNotifier();
+    EventProcessor eventProcessor(Collection<EventHandler> eventHandlers) {
+        return new HandlingEventProcessor(new ArrayList<>(eventHandlers));
+    }
 
-        EventProcessor eventProcessor = new HandlingEventProcessor(getEventHandlers());
-        eventProcessor = new AlarmIgnoringProtector(eventProcessor, alarm, intrusionNotifier);
-        eventProcessor = new AlarmIntrusionDetector(eventProcessor, alarm);
-
+    @Bean
+    EventProcessor protectedEventProcessor(EventProcessor eventProcessor, Alarm activatedAlarm, IntrusionNotifier intrusionNotifier) {
+        eventProcessor = new AlarmIgnoringProtector(eventProcessor, activatedAlarm, intrusionNotifier);
+        eventProcessor = new AlarmIntrusionDetector(eventProcessor, activatedAlarm);
         return eventProcessor;
     }
 
     @Bean
-    com.coolcompany.smarthome.events.EventHandler getSensorEventHandler() {
-        return new EventHandlerAdapter(getProtectedEventProcessor());
+    com.coolcompany.smarthome.events.EventHandler adaptedSensorEventHandler(EventProcessor protectedEventProcessor) {
+        return new EventHandlerAdapter(protectedEventProcessor);
     }
 
     @Bean
-    SensorEventsManager getSensorEventsManager() {
+    SensorEventsManager sensorEventsManager(com.coolcompany.smarthome.events.EventHandler adaptedSensorEventHandler) {
         SensorEventsManager sensorEventsManager = new SensorEventsManager();
-        sensorEventsManager.registerEventHandler(getSensorEventHandler());
+        sensorEventsManager.registerEventHandler(adaptedSensorEventHandler);
         return sensorEventsManager;
     }
 }
