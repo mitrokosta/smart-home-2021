@@ -2,6 +2,7 @@ package ru.sbt.mipt.oop.configuration;
 
 import com.coolcompany.smarthome.events.SensorEventsManager;
 import org.springframework.beans.factory.ListableBeanFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import rc.RemoteControl;
@@ -181,15 +182,15 @@ public class ProtectedSmartHomeConfiguration {
     }
 
     @Bean
-    List<String> buttons() {
+    List<String> rcButtons() {
         return List.of("A", "B", "C", "D", "1", "2", "3", "4");
     }
 
     @Bean
-    RemoteControl remoteControl(List<String> buttons, ListableBeanFactory beanFactory) {
-        ConfigurableRemoteControl rc = new ConfigurableRemoteControl(buttons);
+    RemoteControl remoteControl(@Qualifier("rcButtons") List<String> rcButtons, ListableBeanFactory beanFactory) {
+        ConfigurableRemoteControl rc = new ConfigurableRemoteControl(rcButtons);
         Map<String, Command> commands = beanFactory.getBeansOfType(Command.class);
-        buttons.forEach(button -> rc.setCommandForButton(button, commands.get("button" + button + "Command")));
+        rcButtons.forEach(button -> rc.setCommandForButton(button, commands.get("button" + button + "Command")));
         return rc;
     }
 }
