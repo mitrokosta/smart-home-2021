@@ -39,4 +39,4 @@ door event handling routine, changes not so frequently).
 Watch out for introducing [leaky abstractions](https://en.wikipedia.org/wiki/Leaky_abstraction) into your code (e.g. 
 an abstraction for reading data must not know if the implementation does it with file IO or through network).
 
-Now with Jenkins!   
+Now with Jenkins!    
