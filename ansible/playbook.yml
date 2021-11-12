@@ -22,12 +22,12 @@
     - name: Копирование JAR на сервер
       copy:
         src: ../target/smart-home-1.0-SNAPSHOT-jar-with-dependencies.jar
-        dest: /home/mftiedu/smart-home.jar
+        dest: smart-home.jar
 
     - name: Копирование конфигурации на сервер
       copy:
         src: ../smart-home-1.js
-        dest: /home/mftiedu/smart-home-1.js
+        dest: smart-home-1.js
 
     - name: Запуск JAR
       shell: java -jar smart-home.jar
