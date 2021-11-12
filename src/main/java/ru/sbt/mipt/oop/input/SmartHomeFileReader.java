@@ -21,7 +21,7 @@ public class SmartHomeFileReader implements SmartHomeReader {
         try {
             return deserializer.deserialize(Files.readAllBytes(filePath));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return new SmartHome();
         }
     }
 }
