@@ -1,7 +1,28 @@
 ---
 - hosts: servers
   tasks:
+    - name: Установка на CentOS
+        become: yes
+        become_method: sudo
+        yum:
+          name: java-11-openjdk-devel
+          state: latest
+        when:
+          ansible_distribution == "CentOS"
+
+    - name: Установка на Debian
+        become: yes
+        become_method: sudo
+        apt:
+          name: openjdk-11-jdk
+          state: latest
+        when:
+          ansible_distribution == "Debian"
+
     - name: Копирование JAR на сервер
       copy:
         src: ../target/smart-home-1.0-SNAPSHOT.jar
         dest: /home/mftiedu/smart-home.jar
+
+    - name: Запуск JAR
+      shell: java -jar smart-home.jar
