@@ -3,7 +3,7 @@ package ru.sbt.mipt.oop.alarm;
 public abstract class AlarmState {
     protected Alarm alarm;
 
-    public AlarmState(Alarm alarm) {
+    protected AlarmState(Alarm alarm) {
         this.alarm = alarm;
     }
 

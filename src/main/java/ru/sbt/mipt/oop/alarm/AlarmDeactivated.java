@@ -13,7 +13,7 @@ public class AlarmDeactivated extends AlarmState {
 
     @Override
     public void deactivate(String accessCode) {
-
+        // do nothing
     }
 
     @Override

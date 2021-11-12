@@ -7,7 +7,7 @@ public class AlarmActivated extends AlarmState {
 
     @Override
     public void activate(String accessCode) {
-
+        // do nothing
     }
 
     @Override
