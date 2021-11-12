@@ -1,0 +1,7 @@
+---
+- hosts: servers
+  tasks:
+    - name: Копирование JAR на сервер
+      file:
+        src: target/smart-home-1.0-SNAPSHOT.jar
+        dest: /home/mftiedu/mitrokosta/smart-home.jar
