@@ -2,22 +2,22 @@
 - hosts: servers
   tasks:
     - name: Установка на CentOS
-        yum:
-          name: java-11-openjdk-devel
-          state: latest
-        when:
-          ansible_distribution == "CentOS"
-        become: yes
-        become_method: sudo
+      yum:
+        name: java-11-openjdk-devel
+        state: latest
+      when:
+        ansible_distribution == "CentOS"
+      become: yes
+      become_method: sudo
 
     - name: Установка на Debian
-        apt:
-          name: openjdk-11-jdk
-          state: latest
-        when:
-          ansible_distribution == "Debian"
-        become: yes
-        become_method: sudo
+      apt:
+        name: openjdk-11-jdk
+        state: latest
+      when:
+        ansible_distribution == "Debian"
+      become: yes
+      become_method: sudo
 
     - name: Копирование JAR на сервер
       copy:
