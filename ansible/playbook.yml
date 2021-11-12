@@ -4,4 +4,4 @@
     - name: Копирование JAR на сервер
       copy:
         src: ../target/smart-home-1.0-SNAPSHOT.jar
-        dest: /home/mftiedu/mitrokosta/smart-home.jar
+        dest: /home/mftiedu/smart-home.jar
