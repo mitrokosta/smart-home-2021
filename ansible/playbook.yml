@@ -2,6 +2,6 @@
 - hosts: servers
   tasks:
     - name: Копирование JAR на сервер
-      file:
-        src: "{{ lookup('env', 'WORKSPACE') }}/target/smart-home-1.0-SNAPSHOT.jar"
+      copy:
+        src: target/smart-home-1.0-SNAPSHOT.jar
         dest: /home/mftiedu/mitrokosta/smart-home.jar
